@@ -1,0 +1,29 @@
+body {
+    background-color: #f9fbfd;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: large;
+}
+
+#main {
+    text-align: center;
+    padding-top: 50px;
+}
+
+#start {
+    background-color: navy;
+    color: white;
+    width: 100px;
+    height: 35px;
+    font-size: large;
+}
+
+#quiz-container {
+    display:none;
+    text-align: center;
+    margin-top: 100px;
+}
