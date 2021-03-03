@@ -59,8 +59,8 @@ let questionsTable = [
 let start = document.getElementById('start')
 let main = document.getElementById('main')
 let quizContainer = document.getElementById('quiz-container')
+let correct = true
 
-start.addEventListener('click', VerifyAnswer)
 
 function StartDisplayingQuestions() {
     let qst = questionsTable[questionNumber];
@@ -70,7 +70,6 @@ function StartDisplayingQuestions() {
     choiceC.textContent = qst.answerC;
     choiceD.textContent = qst.answerD;
     console.log('click')
-    
 }
 
 //This is the function for the timer
@@ -95,28 +94,28 @@ function StartDownCounting() {
     }, 1000);
 }
 
-
+document.getElementById('answer-buttons').addEventListener('click', (VerifyAnswer))
 //This is where an answer is selected and next question appears
-function selection(event) {
-    document.getElementById('answer-buttons').addEventListener('click', event => {
-        if (answer === questionsTable[questionNumber].correctAnswer) {
-            questionNumber++;
-            score++;
-   
-       if (answer === questionsTable[questionNumber].wrongAnswer) 
-           questionNumber++;
-            }
-      })
+function NextQ() {
+    if (correct){
+        questionNumber++;
+        score++;
+    }
+    else{
+        questionNumber++;
+    }
 }
 
 
-function VerifyAnswer(answer) {
+start.addEventListener('click', VerifyAnswer)
+
+function VerifyAnswer(event) {
     main.style.display = 'none';
     StartDownCounting()
     quizContainer.style.display = 'block'
     if (questionNumber < questionsTable.length) {
         StartDisplayingQuestions();
-        selection()
+        NextQ()
     }
 
     else {
