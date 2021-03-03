@@ -60,12 +60,9 @@ let start = document.getElementById('start')
 let main = document.getElementById('main')
 let quizContainer = document.getElementById('quiz-container')
 
-start.addEventListener('click', StartDisplayingQuestions)
+start.addEventListener('click', VerifyAnswer)
 
 function StartDisplayingQuestions() {
-    main.style.display = 'none';
-    StartDownCounting()
-    quizContainer.style.display = 'block'
     let qst = questionsTable[questionNumber];
     questionText.innerText = qst.question;
     choiceA.textContent = qst.answerA;
@@ -73,8 +70,10 @@ function StartDisplayingQuestions() {
     choiceC.textContent = qst.answerC;
     choiceD.textContent = qst.answerD;
     console.log('click')
+    
 }
 
+//This is the function for the timer
 function StartDownCounting() {       
     let interval = setInterval( () => { 
         if (quizTime <= 75 && quizTime >= 11) { 
@@ -96,20 +95,28 @@ function StartDownCounting() {
     }, 1000);
 }
 
-/*function answerSelection() {
-    let answerBtns = document.getElementById('answer-buttons')
-    answerBtns.addEventListener('click')
-}*/
+
+//This is where an answer is selected and next question appears
+function selection(event) {
+    document.getElementById('answer-buttons').addEventListener('click', event => {
+        if (answer === questionsTable[questionNumber].correctAnswer) {
+            questionNumber++;
+            score++;
+   
+       if (answer === questionsTable[questionNumber].wrongAnswer) 
+           questionNumber++;
+            }
+      })
+}
 
 
 function VerifyAnswer(answer) {
-    if (answer === questionsTable[questionNumber].correctAnswer) {
-         questionNumber++;
-         score++;
-
+    main.style.display = 'none';
+    StartDownCounting()
+    quizContainer.style.display = 'block'
     if (questionNumber < questionsTable.length) {
-         StartDisplayingQuestions();
-         }
+        StartDisplayingQuestions();
+        selection()
     }
 
     else {
@@ -123,4 +130,3 @@ function VerifyAnswer(answer) {
         location.href = './HS.html'
     }
 }
-
