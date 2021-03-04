@@ -1,10 +1,15 @@
-let timeLeft = document.getElementById("countdown");
-let userHighscoresTable = document.getElementById('eeee');
-
-
-let quizTime = 75;
+let start = document.getElementById('start')
+let main = document.getElementById('main')
+let quizContainer = document.getElementById('quiz-container')
+let correct = true
+let quizTime = 60;
+let wrongAnswer = 1;
 let questionNumber = 0;
 let score = 0;
+let timerPenalize = 10;
+let timeLeft = document.getElementById("countdown");
+let userHighscoresTable = document.getElementById('HS');
+
 
 let choiceA = document.getElementById('choiceA'),
     choiceB = document.getElementById('choiceB'),
@@ -54,14 +59,16 @@ let questionsTable = [
     }
 ];
 
+start.addEventListener('click', startGame)
+//this is the main function that contains the other functions, which starts the game
+function startGame () {
+    main.style.display = 'none';
+    quizContainer.style.display = 'block'
+    StartDownCounting()
+    verifyAnswer()
+}
 
-
-let start = document.getElementById('start')
-let main = document.getElementById('main')
-let quizContainer = document.getElementById('quiz-container')
-let correct = true
-
-
+//This sets the questions and answers for the HTML
 function StartDisplayingQuestions() {
     let qst = questionsTable[questionNumber];
     questionText.innerText = qst.question;
@@ -75,9 +82,11 @@ function StartDisplayingQuestions() {
 //This is the function for the timer
 function StartDownCounting() {       
     let interval = setInterval( () => { 
-        if (quizTime <= 75 && quizTime >= 11) { 
+        //Keeps timer color black
+        if (quizTime <= 60 && quizTime >= 11) { 
             timeLeft.style.color = "black"; 
         }
+        //Turns timer color red
         else if (quizTime <= 10 && quizTime >= 0) {
             timeLeft.style.color = "red";
         }
@@ -85,43 +94,37 @@ function StartDownCounting() {
         timeLeft.innerText = quizTime;
         quizTime -= 1;
 
+        //If time runs out, alert message pops up
         if (quizTime < 0) {
             clearInterval(interval);
             alert("Time's up, try again")
-            location.href = './home.html';
             
         }
     }, 1000);
 }
 
-document.getElementById('answer-buttons').addEventListener('click', (VerifyAnswer))
 //This is where an answer is selected and next question appears
 function NextQ() {
     if (correct){
         questionNumber++;
+        console.log('choicesel')
         score++;
     }
     else{
         questionNumber++;
+        score = score - wrongAnswer;
+        quizTime = quizTime - timerPenalize
     }
 }
 
 
-start.addEventListener('click', VerifyAnswer)
-
-function VerifyAnswer(event) {
-    main.style.display = 'none';
-    StartDownCounting()
-    quizContainer.style.display = 'block'
-    if (questionNumber < questionsTable.length) {
-        StartDisplayingQuestions();
+document.getElementById('answer-buttons').addEventListener('click', (verifyAnswer))
+//This function sets the questions
+function verifyAnswer() {
+    if (questionNumber <= questionsTable.length) {
+        console.log(questionNumber, questionsTable)
+        StartDisplayingQuestions()
         NextQ()
-    }
-
-    else {
-        quizTime = parseInt(timeLeft.innerText);
-        quizTime -= 10;
-        timeLeft.innerText = quizTime;
     }
 
     if (score === 5) {
